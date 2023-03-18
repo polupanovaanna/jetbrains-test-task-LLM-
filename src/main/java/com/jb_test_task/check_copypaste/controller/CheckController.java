@@ -28,7 +28,7 @@ public class CheckController {
             String text = data.getContent();
             writer.write(text);
             writer.flush();
-            ProcessBuilder processBuilder = new ProcessBuilder("python3", resolvePythonScriptPath("check_file.py"));
+            ProcessBuilder processBuilder = new ProcessBuilder("python3", resolvePythonScriptPath("python_scripts/check_file.py"));
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
