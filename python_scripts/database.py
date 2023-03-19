@@ -19,17 +19,23 @@ class Database:
     def init_database(self):
         self.cursor.execute("""CREATE TABLE tokens_index (
                         token TEXT PRIMARY KEY,
-                        indexed_files TEXT[] 
+                        indexed_files TEXT[]
                         );""")
-        
+        self.conn.commit()
+
     def close(self):
         self.conn.close()
-    
+
+    def clear_table(self):
+        self.cursor.execute("""DROP TABLE tokens_index;""")
+        self.conn.commit()
+
 
     def add_to_db(self, token: str, files_list: List[str]):
         self.cursor.execute("""INSERT INTO tokens_index (token, indexed_files)
                         VALUES (%s, %s); """,
                         (token, files_list))
+        self.conn.commit()
         self.cursor.execute("SELECT * FROM tokens_index WHERE token = '{0}';".format(token))
 
     def get_token_files(self, token: str) -> List[str]:

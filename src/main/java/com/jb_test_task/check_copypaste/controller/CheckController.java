@@ -23,7 +23,7 @@ public class CheckController {
     @PostMapping("/check")
     public String dataSubmit(@ModelAttribute Data data, Model model) {
 
-        try(FileWriter writer = new FileWriter("tttt.txt", false))
+        try(FileWriter writer = new FileWriter("tmp.txt", false))
         {
             String text = data.getContent();
             writer.write(text);

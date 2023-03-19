@@ -4,26 +4,26 @@ from pygments.formatters import RawTokenFormatter
 from pygments.lexers import guess_lexer
 from database import Database
 
-path_to_file = 'tttt.txt'
 
 formatter = RawTokenFormatter()
 max_percentage = 0.85
 
-def check_file(path_to_file : str, db : Database):
+def check_file(path_to_file : str, db : Database) -> str:
     with open(path_to_file) as f:
         contents = f.read()
 
         try:
             lexer = guess_lexer(contents)
         except:
-            print("Provided file could not be parsed")
+            return "Provided file could not be parsed"
 
         result = highlight(contents, lexer, formatter).decode("utf8").split(sep='\'')
         result = [result[i] for i in range(len(result)) if i%2 == 1]
         result = set(result)
         #in result we have all the unique tokens
 
-        max_tokens_number = max_percentage * len(result)
+        tokens_number = len(result)
+        max_tokens_number = max_percentage * tokens_number
         files_counter = {}
 
         for token in result:
@@ -40,10 +40,15 @@ def check_file(path_to_file : str, db : Database):
 
         for file in files_counter:
             if files_counter[file] >= max_tokens_number:
-                print("file " + file + " seems to have plagiarism")
+                return ("file " + file + " seems to have plagiarism. The percentage is "
+                        + str(round(files_counter[file]/tokens_number * 100, 2)) + '%')
+        return "no plagiarism"
 
+def main():
+    db = Database()
+    db.connect_database()
+    print(check_file('tmp.txt', db))
+    db.close()
 
-db = Database()
-db.connect_database()
-check_file(path_to_file, db)
-db.close()
+if __name__ ==  '__main__':
+    main()
