@@ -28,6 +28,8 @@ python3 python_scripts/index.py repos https://github.com/polupanovaanna/jetbrain
 https://github.com/JetBrains/teamcity-git 
 ```
 
+Note: the main branch of the repo should be named 'main'
+
 After indexing the repositories you can start web service to analyze code by running the command
 
 ```
